@@ -2,17 +2,21 @@ import { Body, Controller, Inject, Post, UsePipes, ValidationPipe } from '@nestj
 import { IAuthService } from './auth';
 import { CreateUserDto } from './dtos/CreateUser.dto';
 import { Services } from 'src/utils/constants';
+import { IUserService } from 'src/user/user';
+import { instanceToPlain } from 'class-transformer';
 
 @Controller('auth')
 export class AuthController {
     constructor(
         @Inject(Services.AUTH)
-        private readonly authService: IAuthService
+        private readonly authService: IAuthService,
+        @Inject(Services.USER)
+        private readonly userService: IUserService
     ) { }
 
     @Post('/signup')
     @UsePipes(ValidationPipe)
-    singup(@Body() createUserDto : CreateUserDto) {
-        return this.authService.signup()
+    async singup(@Body() createUserDto : CreateUserDto) {
+        return instanceToPlain(await this.userService.createUser(createUserDto))
     }
 }
