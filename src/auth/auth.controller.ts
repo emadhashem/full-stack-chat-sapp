@@ -1,10 +1,11 @@
-import { Body, Controller, Inject, Post, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Get, HttpStatus, Inject, Post, Res, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
 import { IAuthService } from './auth';
 import { CreateUserDto } from './dtos/CreateUser.dto';
 import { Services } from 'src/utils/constants';
 import { IUserService } from 'src/user/user';
 import { instanceToPlain } from 'class-transformer';
 import { LocalAuthGuard } from './utils/Guards';
+import { Response } from 'express';
 
 @Controller('auth')
 export class AuthController {
@@ -23,7 +24,12 @@ export class AuthController {
 
     @UseGuards(LocalAuthGuard)
     @Post('/login')
-    async login(@Body('email') email : string , @Body('password') password : string) {
-        return ';)'
+    async login(@Res() res: Response) {
+        return res.send(HttpStatus.OK)
+    }
+
+    @Get('/status')
+    async status() {
+        return 'status'
     }
 }

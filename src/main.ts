@@ -13,6 +13,7 @@ async function bootstrap() {
   const COOKIE_SECRET = process.env.COOKIE_SECRET
   const sessiobRepo = getRepository(Session)
   app.setGlobalPrefix('api')
+  app.enableCors({ origin: ['http://localhost:3000'], credentials: true })
   app.use(session({
     secret: COOKIE_SECRET,
     saveUninitialized: false,

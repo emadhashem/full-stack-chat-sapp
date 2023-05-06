@@ -16,5 +16,5 @@ export class CreateUserDto {
 
     @IsString()
     @MinLength(4)
-    password
+    password : string
 }

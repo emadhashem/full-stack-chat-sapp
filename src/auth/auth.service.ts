@@ -1,4 +1,4 @@
-import { Inject, Injectable, NotFoundException } from '@nestjs/common';
+import { HttpException, Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { IAuthService } from './auth';
 import { Services } from 'src/utils/constants';
 import { IUserService } from 'src/user/user';
@@ -11,13 +11,11 @@ export class AuthService implements IAuthService {
         @Inject(Services.USER)
         private readonly userService: IUserService
     ) { }
-    signup() {
-        return 'user service'
-    }
+    
     async validateUser(email: string, password: string) {
         const user = await this.userService.findUser(email)
-        if(!user) throw new NotFoundException('User Not found')
-        const validatePass = await comparePassword(password , user.password)
-        return user
+        if (!user) throw new NotFoundException('User Not found')
+        const validatePass = await comparePassword(password, user.password)
+        return validatePass ? user : null
     }
 }
