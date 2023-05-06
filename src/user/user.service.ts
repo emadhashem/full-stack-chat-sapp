@@ -21,6 +21,12 @@ export class UserService implements IUserService {
             throw new HttpException('User may already exists', HttpStatus.CONFLICT)
         }
     }
+    
+
+    async findUser(email: string): Promise<User> {
+
+        return await this.userRepo.findOne({ email })
+    }
 
 
 }
